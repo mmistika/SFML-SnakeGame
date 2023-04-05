@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\Game">
+      <UniqueIdentifier>{d08ae699-53ad-401c-9211-8b34112e27a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game\Snake">
+      <UniqueIdentifier>{9827bb3a-4a62-4277-8284-572308970f3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game\Food">
+      <UniqueIdentifier>{5060c642-a6dc-4ce2-b316-66adc8743524}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Snake.cpp">
+      <Filter>Source Files\Game\Snake</Filter>
+    </ClCompile>
+    <ClCompile Include="FoodSpawner.cpp">
+      <Filter>Source Files\Game\Food</Filter>
+    </ClCompile>
+    <ClCompile Include="GameField.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Game.h">
+      <Filter>Source Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Snake.h">
+      <Filter>Source Files\Game\Snake</Filter>
+    </ClInclude>
+    <ClInclude Include="FoodSpawner.h">
+      <Filter>Source Files\Game\Food</Filter>
+    </ClInclude>
+    <ClInclude Include="GameField.h">
+      <Filter>Source Files\Game</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
