@@ -18,6 +18,9 @@
     <Filter Include="Source Files\Game\Food">
       <UniqueIdentifier>{5060c642-a6dc-4ce2-b316-66adc8743524}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Game\Textures">
+      <UniqueIdentifier>{623fe79f-795a-4cc2-8627-777ccd04a824}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -49,5 +52,16 @@
     <ClInclude Include="GameField.h">
       <Filter>Source Files\Game</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="fieldTexture.png">
+      <Filter>Source Files\Game\Textures</Filter>
+    </Image>
+    <Image Include="foodTexture.png">
+      <Filter>Source Files\Game\Textures</Filter>
+    </Image>
+    <Image Include="snakeTexture.png">
+      <Filter>Source Files\Game\Textures</Filter>
+    </Image>
   </ItemGroup>
 </Project>

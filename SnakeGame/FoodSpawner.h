@@ -10,7 +10,7 @@
 class FoodSpawner
 {
 public:
-	FoodSpawner(GameField* field);
+	FoodSpawner(GameField* field, sf::Texture* texture);
 	~FoodSpawner();
 
 	sf::Vector2f currentPos() const { return foodUnit_.getPosition(); }

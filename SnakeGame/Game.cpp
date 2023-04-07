@@ -14,14 +14,27 @@ Game::Game(sf::RenderWindow* window)
 		!(window_->getSize().x % (int)tileEdgeLength_));
 	window_->setFramerateLimit(60);
 
-	backgroundColor_ = sf::Color::Black;
+	// Field texture
+	textures_[0] = new sf::Texture();
+	textures_[0]->loadFromFile("fieldTexture.png");
 
 	int normilizedWidth = window_->getSize().x / (int)tileEdgeLength_;
 	int normilizedHeight = window_->getSize().y / (int)tileEdgeLength_;
 
-	field_ = new GameField(normilizedWidth, normilizedHeight,(int)tileEdgeLength_);
+	field_ = new GameField(normilizedWidth, normilizedHeight,(int)tileEdgeLength_, textures_[0]);
+
+	// Food texture
+	textures_[1] = new sf::Texture();
+	textures_[1]->loadFromFile("foodTexture.png");
+
+	food_ = new FoodSpawner(field_, textures_[1]);
+
+	// Snake texture
+	textures_[2] = new sf::Texture();
+	textures_[2]->loadFromFile("snakeTexture.png");
+
 	snake_ = new Snake(field_);
-	food_ = new FoodSpawner(field_);
+	
 }
 
 Game::~Game()
@@ -29,6 +42,9 @@ Game::~Game()
 	delete snake_;
 	delete food_;
 	delete field_;
+
+	for (auto pointer : textures_)
+		delete pointer;
 }
 
 void Game::loop()
@@ -52,7 +68,7 @@ void Game::loop()
 			}
 		}
 
-		window_->clear(backgroundColor_);
+		window_->clear();
 
 		snake_->update(directionChosen, food_->currentPos());
 		if (snake_->isFoodEaten())
@@ -78,6 +94,8 @@ void Game::loop()
 			std::cin >> _;
 			break;
 		}
+
+		window_->draw(*field_->getRectToDraw());
 
 		for (auto drawable : snake_->getRectsToDraw())
 			window_->draw(*drawable);

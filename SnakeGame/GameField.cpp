@@ -4,9 +4,18 @@
 
 using namespace gf_;
 
-GameField::GameField(int width, int height, int tileEdgeLength)
+GameField::GameField(int width, int height, int tileEdgeLength, sf::Texture* texture)
 	: width_(width), height_(height), tileEdgeLength_(tileEdgeLength)
 {
+	fieldRect_.setSize({ (float)width_ * tileEdgeLength_, (float)height_ * tileEdgeLength_ });
+
+	texture->setRepeated(true);
+
+	fieldRect_.setTexture(texture);
+	fieldRect_.setTextureRect(sf::IntRect(0, 0,
+		width_ * tileEdgeLength_,
+		height_ * tileEdgeLength_));
+
 	matrix_.resize(height_);
 	for (int i = 0; i < height_; ++i)
 	{

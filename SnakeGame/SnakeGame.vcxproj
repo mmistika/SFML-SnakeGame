@@ -145,6 +145,11 @@
     <ClInclude Include="GameField.h" />
     <ClInclude Include="Snake.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="fieldTexture.png" />
+    <Image Include="foodTexture.png" />
+    <Image Include="snakeTexture.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

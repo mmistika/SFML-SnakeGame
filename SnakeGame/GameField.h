@@ -3,6 +3,8 @@
 
 #include <vector>
 
+#include <SFML/Graphics.hpp>
+
 namespace gf_
 {
 	struct Position { int x, y; };
@@ -11,7 +13,7 @@ namespace gf_
 class GameField
 {
 public:
-	GameField(int width, int height, int tileEdgeLength);
+	GameField(int width, int height, int tileEdgeLength, sf::Texture* texture);
 	~GameField();
 
 	int width() { return width_; }
@@ -29,9 +31,12 @@ public:
 
 	bool isPosInField(int x, int y) const;
 
+	sf::Drawable* getRectToDraw() const { return (sf::Drawable*) &fieldRect_; };
+
 private:
 	gf_::Position normalizePosition_(int x, int y) const;
 
+	sf::RectangleShape fieldRect_;
 	int width_, height_, tileEdgeLength_, tileSum_;
 	std::vector<std::vector<bool>> matrix_;
 	std::vector<int> matrixCapacity_;

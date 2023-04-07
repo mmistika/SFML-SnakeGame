@@ -17,7 +17,7 @@ public:
 
 private:
 	sf::RenderWindow* window_;
-	sf::Color backgroundColor_;
+	sf::Texture* textures_[3]; // 0 - field, 1 - food, 2 - snake
 
 	GameField* field_;
 	float tileEdgeLength_;
