@@ -10,16 +10,18 @@
 enum class Direction
 {
 	None,
-	Left = sf::Keyboard::Left,
-	Right,
 	Up,
-	Down
+	Right,
+	Down,
+	Left
 };
+
+Direction SFMLKeyToSnakeDirection(sf::Keyboard::Key key);
 
 class Snake
 {
 public:
-	Snake(GameField* field, float speed = 0.2f, sf::Color color = sf::Color::Green);
+	Snake(GameField* field, sf::Texture* textures, float speed = 0.2f);
 	~Snake();
 
 	void update(Direction direction, sf::Vector2f foodPos);
@@ -35,10 +37,20 @@ private:
 		Direction direction = Direction::None;
 
 		Segment() : rect(sf::RectangleShape()) {};
-		Segment(const Segment& segment) : rect(segment.rect) {};
+		Segment(const Segment& segment)
+			: rect(segment.rect), direction(segment.direction) {};
 	};
 
-	sf::Vector2f getNewPositionOffset_(Direction direction);
+	enum class SegmentName { Head, Body, Tail, Turn };
+	void setTextureByName_(sf::RectangleShape& segment, SegmentName name);
+
+	sf::Vector2f getNewPositionOffset_(Direction direction) const;
+	Direction getOppositeDirection_(Direction direction) const;
+	Direction getDirectionFromPositions_(sf::Vector2f position, sf::Vector2f position2) const;
+
+	// direction2 (direction of previous segment) should be set only if rotation is needed for turn segment.
+	float getRotation_(Direction direction, Direction direction2 = Direction::None) const;
+	
 	bool isPosOnSnake_(sf::Vector2f pos) const;
 
 	GameField* field_;
@@ -48,7 +60,7 @@ private:
 	float deltaTime_ = 0;
 	float speed_;
 
-	sf::Color color_;
+	sf::Texture* textures_;
 	
 	std::vector<Segment*> segmentList_;
 

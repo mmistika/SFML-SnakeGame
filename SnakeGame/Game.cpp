@@ -33,7 +33,7 @@ Game::Game(sf::RenderWindow* window)
 	textures_[2] = new sf::Texture();
 	textures_[2]->loadFromFile("snakeTexture.png");
 
-	snake_ = new Snake(field_);
+	snake_ = new Snake(field_, textures_[2]);
 	
 }
 
@@ -63,7 +63,7 @@ void Game::loop()
 				break;
 			case sf::Event::KeyPressed:
 				if (event.key.code >= sf::Keyboard::Left and event.key.code <= sf::Keyboard::Down)
-					directionChosen = static_cast<Direction>(event.key.code);
+					directionChosen = SFMLKeyToSnakeDirection(event.key.code);
 				break;
 			}
 		}
