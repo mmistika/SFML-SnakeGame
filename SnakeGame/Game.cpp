@@ -76,7 +76,7 @@ void Game::loop()
 			food_->respawn();
 			score_++;
 			window_->setTitle(std::string("SnakeGame | Score: ") + std::to_string(score_));
-			if (score_ + 2 == field_->tileSum())
+			if (score_ + 3 == field_->tileSum())
 			{
 				std::cout << "The end! You won..." << std::endl;
 				std::cout << "\nPress any key to close the game..." << std::endl;
