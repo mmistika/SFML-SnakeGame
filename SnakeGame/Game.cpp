@@ -3,6 +3,7 @@
 #include <thread>
 #include <iostream>
 
+#include "Direction.h"
 #include "Game.h"
 
 Game::Game(sf::RenderWindow* window)
@@ -49,7 +50,7 @@ Game::~Game()
 
 void Game::loop()
 {
-	Direction directionChosen = Direction::None;
+	Direction::Type directionChosen = Direction::None;
 
 	while (window_->isOpen())
 	{
@@ -63,7 +64,7 @@ void Game::loop()
 				break;
 			case sf::Event::KeyPressed:
 				if (event.key.code >= sf::Keyboard::Left and event.key.code <= sf::Keyboard::Down)
-					directionChosen = SFMLKeyToSnakeDirection(event.key.code);
+					directionChosen = Direction::fromSfmlKey(event.key.code);
 				break;
 			}
 		}

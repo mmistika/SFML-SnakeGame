@@ -1,22 +1,5 @@
 #include "snake.h"
 
-Direction SFMLKeyToSnakeDirection(sf::Keyboard::Key key)
-{
-	switch (key)
-	{
-	case sf::Keyboard::Left:
-		return Direction::Left;
-	case sf::Keyboard::Right:
-		return Direction::Right;
-	case sf::Keyboard::Up:
-		return Direction::Up;
-	case sf::Keyboard::Down:
-		return Direction::Down;
-	default:
-		return Direction::None;
-	}
-}
-
 Snake::Snake(GameField* field, sf::Texture* textures, float speed)
 	: field_(field),
 	tileEdgeLength_((float)field_->tileEdgeLength()),
@@ -94,7 +77,7 @@ Snake::~Snake()
 		delete segmentPointer;
 }
 
-void Snake::update(Direction direction, sf::Vector2f foodPos)
+void Snake::update(Direction::Type direction, sf::Vector2f foodPos)
 {
 	deltaTime_ += timer_.getElapsedTime().asSeconds();
 	timer_.restart();
@@ -109,7 +92,7 @@ void Snake::update(Direction direction, sf::Vector2f foodPos)
 
 		// Head movement
 		Segment* head = segmentList_[0];
-		if (direction != getOppositeDirection_(head->direction) and
+		if (direction != Direction::opposite(head->direction) and
 			direction != Direction::None)
 		{
 			head->direction = direction;
@@ -204,7 +187,7 @@ void Snake::setTextureByName_(sf::RectangleShape& segment, SegmentName name)
 	}
 }
 
-sf::Vector2f Snake::getNewPositionOffset_(Direction direction) const
+sf::Vector2f Snake::getNewPositionOffset_(Direction::Type direction) const
 {
 	sf::Vector2f offset;
 	switch (direction)
@@ -225,23 +208,7 @@ sf::Vector2f Snake::getNewPositionOffset_(Direction direction) const
 	return offset;
 }
 
-Direction Snake::getOppositeDirection_(Direction direction) const
-{
-	switch (direction)
-	{
-	case Direction::Left:
-		return Direction::Right;
-	case Direction::Right:
-		return Direction::Left;
-	case Direction::Up:
-		return Direction::Down;
-	case Direction::Down:
-		return Direction::Up;
-	}
-	return Direction::None;
-}
-
-Direction Snake::getDirectionFromPositions_(sf::Vector2f position, sf::Vector2f position2) const
+Direction::Type Snake::getDirectionFromPositions_(sf::Vector2f position, sf::Vector2f position2) const
 {
 	float dx = position2.x - position.x;
 	float dy = position2.y - position.y;
@@ -254,19 +221,14 @@ Direction Snake::getDirectionFromPositions_(sf::Vector2f position, sf::Vector2f 
 	}
 }
 
-float Snake::getRotation_(Direction direction, Direction direction2) const
+float Snake::getRotation_(Direction::Type direction, Direction::Type direction2) const
 {
 	float rotation = 0;
 
 	if (direction2 != Direction::None)
 	{
-		if ((int)direction - 1 == (int)direction2 or
-			(direction == Direction::Up and direction2 == Direction::Left))
-			rotation += 180;
-
-		if ((int)direction + 1 == (int)direction2 or
-			(direction == Direction::Left and direction2 == Direction::Up))
-			rotation += 90;
+		if (direction - 1 == direction2) rotation += 180;
+		else if (direction + 1 == direction2) rotation += 90;
 	}
 
 	switch (direction)
