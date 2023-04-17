@@ -6,6 +6,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "Direction.h"
+#include "Segment.h"
 #include "GameField.h"
 
 class Snake
@@ -18,22 +19,9 @@ public:
 	bool isFoodEaten() const { return isFoodEaten_; }
 	bool isDead() const { return isDead_; }
 
-	std::vector<sf::Drawable*> getRectsToDraw() const;
+	const std::vector<const sf::Drawable*> getRectsToDraw() const;
 
 private:
-	struct Segment
-	{
-		sf::RectangleShape rect;
-		Direction::Type direction = Direction::None;
-
-		Segment() : rect(sf::RectangleShape()) {};
-		Segment(const Segment& segment)
-			: rect(segment.rect), direction(segment.direction) {};
-	};
-
-	enum class SegmentName { Head, Body, Tail, Turn };
-	void setTextureByName_(sf::RectangleShape& segment, SegmentName name);
-
 	sf::Vector2f getNewPositionOffset_(Direction::Type direction) const;
 	Direction::Type getDirectionFromPositions_(sf::Vector2f position, sf::Vector2f position2) const;
 

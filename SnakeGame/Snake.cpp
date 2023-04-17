@@ -8,66 +8,43 @@ Snake::Snake(GameField* field, sf::Texture* textures, float speed)
 {
 	timer_ = sf::Clock();
 
-	float originOffset = tileEdgeLength_ / 2;
-
 	// Head segment
-	Segment* bufferSegm = new Segment();
-	bufferSegm->rect.setOrigin({ originOffset, originOffset });
-	bufferSegm->rect.setPosition(
-		{
-			tileEdgeLength_ * 2 + originOffset,
-			0.f + originOffset
-		});
-	bufferSegm->rect.setSize({ tileEdgeLength_ , tileEdgeLength_ });
-	
-	bufferSegm->rect.setTexture(textures_);
-	setTextureByName_(bufferSegm->rect, SegmentName::Head);
+	Segment* bufferSegm = new Segment(
+		{ tileEdgeLength_ * 2, 0.f },
+		tileEdgeLength_,
+		Segment::Type::Head,
+		Direction::Right);
 
-	bufferSegm->direction = Direction::Right;
-	bufferSegm->rect.setRotation(getRotation_(Direction::Right));
+	bufferSegm->setTexture(textures_)
+		.setRotation(getRotation_(Direction::Right));
 
 	segmentList_.push_back(bufferSegm);
-
 	field_->setSnakeBlockAt((int)tileEdgeLength_ * 2, 0);
 
 	// Body segment
-	bufferSegm = new Segment();
-	bufferSegm->rect.setOrigin({ originOffset, originOffset });
-	bufferSegm->rect.setPosition(
-		{
-			tileEdgeLength_ + originOffset,
-			0.f + originOffset
-		});
-	bufferSegm->rect.setSize({ tileEdgeLength_ , tileEdgeLength_ });
+	bufferSegm = new Segment(
+		{ tileEdgeLength_, 0.f },
+		tileEdgeLength_,
+		Segment::Type::Body,
+		Direction::Right);
 
-	bufferSegm->rect.setTexture(textures_);
-	setTextureByName_(bufferSegm->rect, SegmentName::Body);
-
-	bufferSegm->direction = Direction::Right;
-	bufferSegm->rect.setRotation(getRotation_(Direction::Right));
+	bufferSegm->setTexture(textures_)
+		.setRotation(getRotation_(Direction::Right));
 
 	segmentList_.push_back(bufferSegm);
-
 	field_->setSnakeBlockAt((int)tileEdgeLength_, 0);
 
 	// Tail segment
-	bufferSegm = new Segment();
-	bufferSegm->rect.setOrigin({ originOffset, originOffset });
-	bufferSegm->rect.setPosition(
-		{
-			0.f + originOffset,
-			0.f + originOffset
-		});
-	bufferSegm->rect.setSize({ tileEdgeLength_ , tileEdgeLength_ });
+	bufferSegm = new Segment(
+		{ 0.f, 0.f },
+		tileEdgeLength_,
+		Segment::Type::Tail,
+		Direction::Right);
 	
-	bufferSegm->rect.setTexture(textures_);
-	setTextureByName_(bufferSegm->rect, SegmentName::Tail);
-	
-	bufferSegm->direction = Direction::Right;
-	bufferSegm->rect.setRotation(getRotation_(Direction::Right));
+	bufferSegm->setTexture(textures_)
+		.setRotation(getRotation_(Direction::Right));
 	
 	segmentList_.push_back(bufferSegm);
-
 	field_->setSnakeBlockAt(0, 0);
 }
 
@@ -88,59 +65,57 @@ void Snake::update(Direction::Type direction, sf::Vector2f foodPos)
 	{
 		deltaTime_ = 0;
 
-		int originOffset = tileEdgeLength_ / 2;
-
 		// Head movement
 		Segment* head = segmentList_[0];
-		if (direction != Direction::opposite(head->direction) and
+		if (direction != Direction::opposite(head->direction()) and
 			direction != Direction::None)
 		{
-			head->direction = direction;
-			head->rect.setRotation(getRotation_(direction));
+			head->setDirection(direction)
+				.setRotation(getRotation_(direction));
 		}
 
 		Segment* bufferSegm = new Segment(*head);
 
-		sf::Vector2f newPosOffset = getNewPositionOffset_(head->direction);
-		sf::Vector2f newPos = head->rect.getPosition() + newPosOffset;
+		sf::Vector2f newPosOffset = getNewPositionOffset_(head->direction());
+		sf::Vector2f newPos = head->position() + newPosOffset;
 
-		if (!field_->isPosInField((int)newPos.x - originOffset, (int)newPos.y - originOffset) or isPosOnSnake_(newPos))
+		if (!field_->isPosInField((int)newPos.x, (int)newPos.y) or
+			isPosOnSnake_(newPos))
 		{
 			isDead_ = true;
-			head->rect.setFillColor(sf::Color::Red);
 			return;
 		}
 
-		head->rect.setPosition(newPos);
-		field_->setSnakeBlockAt((int)newPos.x - originOffset, (int)newPos.y - originOffset);
+		head->setPosition(newPos);
+		field_->setSnakeBlockAt((int)newPos.x, (int)newPos.y);
 
 		// Segment after the head movement
-		if (newPos.x - originOffset == foodPos.x and
-			newPos.y - originOffset == foodPos.y)
+		if (newPos == foodPos)
 		{
 			isFoodEaten_ = true;
 		}
 		else
 		{
-			sf::Vector2f pos = bufferSegm->rect.getPosition();
+			sf::Vector2f pos = bufferSegm->position();
 			delete bufferSegm;
 
 			bufferSegm = new Segment(*segmentList_[segmentList_.size() - 2]);
-			bufferSegm->direction = head->direction;
-			bufferSegm->rect.setPosition(pos);
+			bufferSegm->setDirection(head->direction());
+			bufferSegm->setPosition(pos);
 		}
 
 		segmentList_.insert(segmentList_.begin() + 1, bufferSegm);
 
-		if (head->direction == segmentList_[2]->direction)
+		if (head->direction() == segmentList_[2]->direction())
 		{
-			bufferSegm->rect.setRotation(getRotation_(head->direction));
-			setTextureByName_(bufferSegm->rect, SegmentName::Body);
+			bufferSegm->setRotation(getRotation_(head->direction()))
+				.setType(Segment::Type::Body);
+
 		}
 		else
 		{
-			bufferSegm->rect.setRotation(getRotation_(head->direction, segmentList_[2]->direction));
-			setTextureByName_(bufferSegm->rect, SegmentName::Turn);
+			bufferSegm->setRotation(getRotation_(head->direction(), segmentList_[2]->direction()))
+				.setType(Segment::Type::Turn);
 		}
 
 		// Tail movement
@@ -149,41 +124,24 @@ void Snake::update(Direction::Type direction, sf::Vector2f foodPos)
 			bufferSegm = segmentList_.back();
 			segmentList_.pop_back();
 
-			sf::Vector2f pos = bufferSegm->rect.getPosition();
-			field_->removeSnakeBlockAt((int)pos.x - originOffset, (int)pos.y - originOffset);
+			sf::Vector2f pos = bufferSegm->position();
+			field_->removeSnakeBlockAt((int)pos.x, (int)pos.y);
 
 			Segment* segmentToDelete = segmentList_.back();
-			pos = segmentToDelete->rect.getPosition();
+			pos = segmentToDelete->position();
 			delete segmentToDelete;
 
-			bufferSegm->rect.setPosition(pos);
-			bufferSegm->direction = getDirectionFromPositions_(
-				bufferSegm->rect.getPosition(),
-				segmentList_[segmentList_.size() - 2]->rect.getPosition());
-			bufferSegm->rect.setRotation(getRotation_(bufferSegm->direction));
-			
+			bufferSegm->setPosition(pos);
+
+			Direction::Type newDirection = getDirectionFromPositions_(
+				bufferSegm->position(),
+				segmentList_[segmentList_.size() - 2]->position());
+
+			bufferSegm->setDirection(newDirection);
+			bufferSegm->setRotation(getRotation_(bufferSegm->direction()));
 
 			segmentList_[segmentList_.size() - 1] = bufferSegm;
 		}
-	}
-}
-
-void Snake::setTextureByName_(sf::RectangleShape& segment, SegmentName name)
-{
-	switch (name)
-	{
-	case Snake::SegmentName::Head:
-		segment.setTextureRect(sf::IntRect(0, 0, 300, 300));
-		break;
-	case Snake::SegmentName::Body:
-		segment.setTextureRect(sf::IntRect(300, 0, 300, 300));
-		break;
-	case Snake::SegmentName::Tail:
-		segment.setTextureRect(sf::IntRect(300, 300, 300, 300));
-		break;
-	case Snake::SegmentName::Turn:
-		segment.setTextureRect(sf::IntRect(0, 300, 300, 300));
-		break;
 	}
 }
 
@@ -253,15 +211,15 @@ float Snake::getRotation_(Direction::Type direction, Direction::Type direction2)
 bool Snake::isPosOnSnake_(sf::Vector2f pos) const
 {
 	for (auto segm : segmentList_)
-		if (pos == segm->rect.getPosition()) return true;
+		if (pos == segm->position()) return true;
 	return false;
 }
 
-std::vector<sf::Drawable*> Snake::getRectsToDraw() const
+const std::vector<const sf::Drawable*> Snake::getRectsToDraw() const
 {
-	std::vector<sf::Drawable*> vect;
+	std::vector<const sf::Drawable*> vect;
 	for (auto segment : segmentList_)
-		vect.push_back(&segment->rect);
+		vect.push_back(segment->getRectToDraw());
 
 	return vect;
 }
