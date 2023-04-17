@@ -1,7 +1,7 @@
 #ifndef SNAKE_GAME_SNAKE_SNAKE_H_
 #define SNAKE_GAME_SNAKE_SNAKE_H_
 
-#include <vector>
+#include <list>
 
 #include <SFML/Graphics.hpp>
 
@@ -39,7 +39,7 @@ private:
 
 	sf::Texture* textures_;
 	
-	std::vector<Segment*> segmentList_;
+	std::list<Segment*> segmentList_;
 
 	bool isFoodEaten_{ false };
 	bool isDead_ { false };

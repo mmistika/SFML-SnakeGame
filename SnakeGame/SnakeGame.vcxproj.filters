@@ -21,6 +21,12 @@
     <Filter Include="Source Files\Game\Textures">
       <UniqueIdentifier>{623fe79f-795a-4cc2-8627-777ccd04a824}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Game\Snake\Direction">
+      <UniqueIdentifier>{86eceab4-4b9b-4246-8973-d6880bf84d27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game\Snake\Segment">
+      <UniqueIdentifier>{28a45013-8cfe-42f8-89c3-89cc1dfbee4e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -38,6 +44,12 @@
     <ClCompile Include="GameField.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
+    <ClCompile Include="Segment.cpp">
+      <Filter>Source Files\Game\Snake\Segment</Filter>
+    </ClCompile>
+    <ClCompile Include="Direction.cpp">
+      <Filter>Source Files\Game\Snake\Direction</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -51,6 +63,12 @@
     </ClInclude>
     <ClInclude Include="GameField.h">
       <Filter>Source Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Segment.h">
+      <Filter>Source Files\Game\Snake\Segment</Filter>
+    </ClInclude>
+    <ClInclude Include="Direction.h">
+      <Filter>Source Files\Game\Snake\Direction</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

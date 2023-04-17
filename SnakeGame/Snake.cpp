@@ -66,7 +66,7 @@ void Snake::update(Direction::Type direction, sf::Vector2f foodPos)
 		deltaTime_ = 0;
 
 		// Head movement
-		Segment* head = segmentList_[0];
+		Segment* head = segmentList_.front();
 		if (direction != Direction::opposite(head->direction()) and
 			direction != Direction::None)
 		{
@@ -99,14 +99,14 @@ void Snake::update(Direction::Type direction, sf::Vector2f foodPos)
 			sf::Vector2f pos = bufferSegm->position();
 			delete bufferSegm;
 
-			bufferSegm = new Segment(*segmentList_[segmentList_.size() - 2]);
+			bufferSegm = new Segment(**std::prev(segmentList_.end(), 2));
 			bufferSegm->setDirection(head->direction());
 			bufferSegm->setPosition(pos);
 		}
 
-		segmentList_.insert(segmentList_.begin() + 1, bufferSegm);
+		segmentList_.insert(std::next(segmentList_.begin()), bufferSegm);
 
-		if (head->direction() == segmentList_[2]->direction())
+		if (head->direction() == (*std::next(segmentList_.begin(), 2))->direction())
 		{
 			bufferSegm->setRotation(getRotation_(head->direction()))
 				.setType(Segment::Type::Body);
@@ -114,7 +114,7 @@ void Snake::update(Direction::Type direction, sf::Vector2f foodPos)
 		}
 		else
 		{
-			bufferSegm->setRotation(getRotation_(head->direction(), segmentList_[2]->direction()))
+			bufferSegm->setRotation(getRotation_(head->direction(), (*std::next(segmentList_.begin(), 2))->direction()))
 				.setType(Segment::Type::Turn);
 		}
 
@@ -135,12 +135,12 @@ void Snake::update(Direction::Type direction, sf::Vector2f foodPos)
 
 			Direction::Type newDirection = getDirectionFromPositions_(
 				bufferSegm->position(),
-				segmentList_[segmentList_.size() - 2]->position());
+				(*std::prev(segmentList_.end(), 2))->position());
 
 			bufferSegm->setDirection(newDirection);
 			bufferSegm->setRotation(getRotation_(bufferSegm->direction()));
 
-			segmentList_[segmentList_.size() - 1] = bufferSegm;
+			segmentList_.back() = bufferSegm;
 		}
 	}
 }
