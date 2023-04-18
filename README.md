@@ -1,6 +1,12 @@
 <h1 align="center"> C++ Snake Game with SFML </h1>
 This is a simple implementation of the classic Snake game in C++ using the SFML library. The game is written in Visual Studio and is unlicensed, which means that you can use it for free.
 
+<br></br>
+
+<p align="center">
+  <img src="https://github.com/mmistika/SFML-SnakeGame/blob/main/git-resources/snake-vid.gif" alt="snake-gif" />
+</p>
+
 <hr>
 
 ### Getting Started
