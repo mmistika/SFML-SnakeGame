@@ -15,6 +15,7 @@ Segment::Segment(sf::Vector2f position, float size, Segment::Type type, Directio
 Segment::Segment(const Segment& segment)
 {
 	rect_ = sf::RectangleShape(segment.rect_);
+	textureSegmentWidth_ = rect_.getTexture()->getSize().x / 2;
 	originOffset_ = segment.originOffset_;
 	type_ = segment.type();
 	direction_ = segment.direction();
@@ -53,21 +54,24 @@ Segment& Segment::setRotation(float rotation)
 Segment& Segment::setTexture(sf::Texture* texture)
 {
 	rect_.setTexture(texture);
+	textureSegmentWidth_ = texture->getSize().x / 2;
 	updateTextureRect_();
 	return *this;
 }
 
 void Segment::updateTextureRect_()
 {
+	int& w = textureSegmentWidth_;
+
 	switch (type_)
 	{
 	case Segment::Type::Head:
-		return rect_.setTextureRect({ 0, 0, 300, 300 });
+		return rect_.setTextureRect({ 0, 0, w, w });
 	case Segment::Type::Body:
-		return rect_.setTextureRect({ 300, 0, 300, 300 });
+		return rect_.setTextureRect({ w, 0, w, w });
 	case Segment::Type::Tail:
-		return rect_.setTextureRect({ 300, 300, 300, 300 });
+		return rect_.setTextureRect({ w, w, w, w });
 	case Segment::Type::Turn:
-		return rect_.setTextureRect({ 0, 300, 300, 300 });
+		return rect_.setTextureRect({ 0, w, w, w });
 	}
 }

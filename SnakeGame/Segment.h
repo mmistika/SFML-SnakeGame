@@ -2,6 +2,7 @@
 #define SNAKE_GAME_SNAKE_SEGMENT_SEGMENT_H_
 
 #include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Graphics/Texture.hpp>
 
 #include "Direction.h"
 
@@ -33,6 +34,7 @@ private:
 	void updateTextureRect_();
 
 	float originOffset_;
+	int textureSegmentWidth_;
 
 	Type type_;
 	sf::RectangleShape rect_;
